@@ -51,12 +51,12 @@ elif [[ $MAALI_TOOL_MINOR_VERSION -lt 10 ]]; then
 fi
 
 #default build state
-HDF_PARALLEL_NAME="c++-noparallel"
+HDF_BUILD_NAME="c++-noparallel"
 HDF_BUILD_CONFIG="--enable-fortran --enable-cxx --with-zlib --with-slib=$MAALI_SZIP_HOME"
 MAALI_TOOL_PREREQ="szip/2.1.1"
 
-# parse the build options, would be nice to make this a function 
-# the issue currently is the local scope of variables declared 
+# parse the build options, would be nice to make this a function
+# the issue currently is the local scope of variables declared
 if [[ ${#MAALI_TOOL_BUILD_OPTIONS[@]} -gt 0 ]]; then
     for i in ${MAALI_TOOL_BUILD_OPTIONS[@]}
     do
@@ -146,7 +146,7 @@ function maali_pre_build {
   mv $MAALI_TOOL_BUILD_DIR/$MAALI_TOOL_NAME-$MAALI_TOOL_VERSION/* $MAALI_TOOL_BUILD_DIR/
   rmdir $MAALI_TOOL_BUILD_DIR/$MAALI_TOOL_NAME-$MAALI_TOOL_VERSION/
   cd "$MAALI_TOOL_BUILD_DIR"
-  
+
 }
 
 ##############################################################################
