@@ -16,7 +16,7 @@ MAALI_TOOL_PREREQ="numpy/1.19.0 six/1.11.0 cray-hdf5/1.10.5.2"
 MAALI_TOOL_BUILD_PREREQ="setuptools/38.2.1 numpy/1.19.0 cython/0.27.3 cray-hdf5/1.10.5.2 "
 
 #default build state
-H5PY_PARALLEL_NAME=""
+H5PY_BUILD_NAME=""
 H5PY_BUILD_CONFIG=""
 MAALI_TOOL_BUILD_OPTIONS_AVAIL=("H5PY_WITH_PARALLEL=0:1")
 
@@ -38,14 +38,26 @@ fi
 if [[ $H5PY_WITH_PARALLEL -eq 1 ]]; then
     H5PY_BUILD_NAME="-parallel"
     H5PY_BUILD_CONFIG=" CC=cc HDF5_MPI=ON "
-    MAALI_TOOL_PREREQ="numpy/1.19.0 six/1.11.0 cray-mpich cray-hdf5-parallel/1.10.5.2 "
-    MAALI_TOOL_BUILD_PREREQ="setuptools/38.2.1 numpy/1.19.0 cython/0.27.3 cray-mpich cray-hdf5-parallel/1.10.5.2"
+    MAALI_TOOL_PREREQ="numpy/1.19.0 six/1.11.0 cray-mpich cray-hdf5-parallel/1.10.5.2 mpi4py "
+    MAALI_TOOL_BUILD_PREREQ="setuptools/38.2.1 numpy/1.19.0 cython/0.27.3 cray-mpich cray-hdf5-parallel/1.10.5.2 mpi4py "
 fi
 
 MAALI_TOOL_BUILD_OPTIONS_SUFFIX="$H5PY_BUILD_NAME"
 
+# specify which PrgEnv we want to build the tool with
+MAALI_TOOL_CRAY_PRGENV="$MAALI_DEFAULT_CRAY_GCC_PRGENV $MAALI_DEFAULT_CRAY_INTEL_PRGENV"
+
+# specify which cpus to target
+MAALI_TOOL_CRAY_CPU_TARGET="$MAALI_DEFAULT_CRAY_PES"
+
 # specify which compilers we want to build the tool with
-MAALI_TOOL_COMPILERS="$MAALI_DEFAULT_PYTHON"
+MAALI_TOOL_COMPILERS="gcc/7.2.0 intel/17.0.4.196 cce/8.6.5"
+
+# specify which compilers we want to build the tool with
+#MAALI_TOOL_COMPILERS="$MAALI_DEFAULT_PYTHON"
+
+# type of tool (eg. apps, devel, python, etc.)
+MAALI_TOOL_TYPE="python"
 
 # URL to download the source code from
 MAALI_URL="https://files.pythonhosted.org/packages/source/$MAALI_PYTHON_FIRSTLETTER/$MAALI_TOOL_NAME_ORIG/$MAALI_TOOL_NAME_ORIG-$MAALI_TOOL_VERSION.tar.gz"
@@ -57,7 +69,7 @@ MAALI_DST="$MAALI_SRC/$MAALI_TOOL_NAME_ORIG-$MAALI_TOOL_VERSION.tar.gz"
 MAALI_TOOL_BUILD_DIR="$MAALI_BUILD_DIR/$MAALI_TOOL_NAME_ORIG-$MAALI_TOOL_VERSION"
 
 #update configure
-MAALI_TOOL_CONFIGURE='$H5PY_BUILD_CONFIG'
+MAALI_TOOL_CONFIGURE="$H5PY_BUILD_CONFIG"
 
 ##############################################################################
 
