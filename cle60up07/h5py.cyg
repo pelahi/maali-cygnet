@@ -16,6 +16,7 @@ MAALI_TOOL_BUILD_PREREQ="setuptools/38.2.1 cython/0.27.3 cray-hdf5/1.10.5.2"
 #default build state
 H5PY_PARALLEL_NAME=""
 H5PY_BUILD_CONFIG=""
+MAALI_TOOL_BUILD_OPTIONS_AVAIL=("H5PY_WITH_PARALLEL=0:1")
 
 # parse the build options, would be nice to make this a function
 # the issue currently is the local scope of variables declared
@@ -35,7 +36,7 @@ fi
 if [[ $H5PY_WITH_PARALLEL -eq 1 ]]; then
     H5PY_BUILD_NAME="-parallel"
     H5PY_BUILD_CONFIG=" CC=cc HDF5_MPI=ON "
-    MAALI_TOOL_BUILD_PREREQ="setuptools/38.2.1 cython/0.27.3 cray-hdf5-parallel/1.10.5.2"
+    MAALI_TOOL_BUILD_PREREQ="setuptools/38.2.1 cython/0.27.3 cray-mpich cray-hdf5-parallel/1.10.5.2"
 fi
 
 MAALI_TOOL_BUILD_OPTIONS_SUFFIX="$H5PY_BUILD_NAME"
