@@ -10,6 +10,36 @@ For further information see http://www.h5py.org/
 
 EOF
 
+# tool build pre-requisites - not added to the module, only needed for building (loaded after MAALI_TOOL_PREREQ)
+MAALI_TOOL_BUILD_PREREQ="setuptools/38.2.1 cython/0.27.3 cray-hdf5/1.10.5.2"
+
+#default build state
+H5PY_PARALLEL_NAME=""
+H5PY_BUILD_CONFIG=""
+
+# parse the build options, would be nice to make this a function
+# the issue currently is the local scope of variables declared
+if [[ ${#MAALI_TOOL_BUILD_OPTIONS[@]} -gt 0 ]]; then
+    for i in ${MAALI_TOOL_BUILD_OPTIONS[@]}
+    do
+        opt=(${i//=/ })
+        optname=${opt[0]}
+        optval=${opt[1]}
+        if [[ "$optname" -eq "H5PY_WITH_PARALLEL" ]]; then
+            H5PY_WITH_PARALLEL=$optval
+        fi
+    done
+fi
+
+#update build options if parallel build
+if [[ $H5PY_WITH_PARALLEL -eq 1 ]]; then
+    H5PY_BUILD_NAME="-parallel"
+    H5PY_BUILD_CONFIG=" CC=cc HDF5_MPI=ON "
+    MAALI_TOOL_BUILD_PREREQ="setuptools/38.2.1 cython/0.27.3 cray-hdf5-parallel/1.10.5.2"
+fi
+
+MAALI_TOOL_BUILD_OPTIONS_SUFFIX="$H5PY_BUILD_NAME"
+
 # specify which compilers we want to build the tool with
 MAALI_TOOL_COMPILERS="$MAALI_DEFAULT_PYTHON"
 
@@ -23,10 +53,6 @@ MAALI_DST="$MAALI_SRC/$MAALI_TOOL_NAME_ORIG-$MAALI_TOOL_VERSION.tar.gz"
 MAALI_TOOL_BUILD_DIR="$MAALI_BUILD_DIR/$MAALI_TOOL_NAME_ORIG-$MAALI_TOOL_VERSION"
 
 # tool pre-requisites
-MAALI_TOOL_PREREQ="numpy/1.13.3 six/1.11.0"
-
-# tool build pre-requisites - not added to the module, only needed for building (loaded after MAALI_TOOL_PREREQ)
-MAALI_TOOL_BUILD_PREREQ="setuptools/38.2.1 cython/0.27.3 cray-hdf5/1.10.1.1"
+MAALI_TOOL_PREREQ="numpy/1.19.0 six/1.11.0"
 
 ##############################################################################
-
